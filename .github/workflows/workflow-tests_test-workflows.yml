@@ -10,6 +10,7 @@ on:
       - workflow-tests
     paths:
       - 'backend/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -39,12 +40,6 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: python-app
-          path: .
-          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
