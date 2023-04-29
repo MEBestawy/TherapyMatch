@@ -9,7 +9,8 @@ on:
     branches:
       - workflow-tests
     paths:
-      - ['backend/**', '.github/workflows/workflow-tests_test-workflows.yml']
+      - 'backend/**'
+      - '.github/workflows/workflow-tests_test-workflows.yml'
   workflow_dispatch:
 
 permissions:
