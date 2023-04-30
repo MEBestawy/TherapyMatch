@@ -15,12 +15,16 @@ function FrequentlyAsked() {
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                     >
-                    <Typography>Accordion 1</Typography>
+                    <Typography>What is Therapy Match?</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                        Therapy Match is a website that gives the user the freedom
+                        to describe what they are going through either by text or speech.
+
+                        This diagnosis can then be used to generate an accurate report about 
+                        the patient allowing for the patient to be matched to the right
+                        therapist for them.
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -30,12 +34,11 @@ function FrequentlyAsked() {
                     aria-controls="panel2a-content"
                     id="panel2a-header"
                     >
-                    <Typography>Accordion 2</Typography>
+                    <Typography>Who can use Therapy Match?</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                        Anyone can use the app.
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -45,12 +48,13 @@ function FrequentlyAsked() {
                     aria-controls="panel3a-content"
                     id="panel3a-header"
                     >
-                    <Typography>Accordion 3</Typography>
+                    <Typography>Why a therapist?</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                        If you are facing any mental, emotional, or behavioral issues, a therapist
+                        can help you. A therapist can offer you a safe and confidential space where
+                        you can talk, cope, change, learn, and grow.
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
