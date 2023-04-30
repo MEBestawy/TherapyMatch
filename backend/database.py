@@ -3,7 +3,6 @@ from geopy.geocoders import Nominatim
 from math import radians, sin, cos, sqrt, atan2
 
 
-
 DB_NAME = 'psychotherapists.db'
 geolocator = Nominatim(user_agent='psychotherapists')
 
@@ -34,7 +33,10 @@ def get_psychotherapist_by_id(id):
 def get_psychotherapists_by_specialty(keypoints, user_address):
     all_psychotherapists = get_all_psychotherapists()
 
-    user_lat, user_lon = geocode_address(user_address)
+    geocode_result = geocode_address(user_address)
+    if not geocode_result:
+        return []
+    user_lat, user_lon = geocode_result
     if not user_lat or not user_lon:
         return []
 

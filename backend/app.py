@@ -8,7 +8,6 @@ from flask import Flask, request
 
 
 load_dotenv()
-
 app = Flask(__name__)
 CORS(app)
 
@@ -19,8 +18,8 @@ def health():
 
 @app.route('/submit', methods = ['POST'])
 def submit():
-    notes = request.args.get('notes')
-    user_address = request.args.get('address', '')
+    notes = request.json.get('notes')
+    user_address = request.json.get('address')
 
     response = openai.Completion.create(
         model="text-davinci-003",

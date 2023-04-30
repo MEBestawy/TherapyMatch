@@ -40,8 +40,6 @@ const UserForm = () => {
       const response = await axios.post(
         `https://therapymatch-flask-api.azurewebsites.net/submit`,
         {
-          name,
-          contact,
           address,
           notes
         }
@@ -91,7 +89,9 @@ const UserForm = () => {
               label="Address"
               fullWidth
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e) => {
+                console.log(e.target.value);
+                setAddress(e.target.value)}}
             />
           </Grid>
           <Grid item xs={12}>
