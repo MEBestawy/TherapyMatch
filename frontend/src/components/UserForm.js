@@ -61,6 +61,7 @@ const UserForm = () => {
     }
     catch(error){
       console.log("SubmitErr", error)
+      setWaiting(false);
     }
     
   };
