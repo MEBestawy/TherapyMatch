@@ -84,7 +84,7 @@ function Recorder({updateAudioText}) {
                     {isListening ? <span>🎙️</span> : <span>🛑🎙️</span>}
                     <Button onClick={handleSaveNote} disabled={!note}>Save Note </Button>
                     <Button onClick={() => setIsListening(prevState => !prevState)}> Start/Stop</Button>
-                    <Button onClick={() => handleClear("curr")}>Clear</Button>
+                    {isListening ? <Button onClick={() => handleClear("curr")} disabled>Clear</Button> : <Button onClick={() => handleClear("curr")}>Clear</Button> }
                     <div>
                         <Typography id='CurrentNotes' variant='body1'>{note}</Typography>
                     </div>
