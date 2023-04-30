@@ -38,7 +38,7 @@ const UserForm = () => {
     }
     try{
       const response = await axios.post(
-        `http://localhost:5000/submit`,
+        `https://therapymatch-flask-api.azurewebsites.net/submit`,
         {
           name,
           contact,
