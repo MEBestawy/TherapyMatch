@@ -8,6 +8,8 @@ from flask import Flask, request
 
 
 load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 app = Flask(__name__)
 CORS(app)
 
@@ -20,6 +22,8 @@ def health():
 def submit():
     notes = request.json.get('notes')
     user_address = request.json.get('address')
+
+    print("Inputs: ", "Notes:", notes, "Address", user_address)
 
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -39,5 +43,4 @@ def submit():
 
 
 if __name__ == "__main__":
-    openai.api_key = os.getenv("OPENAI_API_KEY")
     app.run()
