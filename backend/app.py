@@ -3,9 +3,11 @@ import openai
 from dotenv import load_dotenv
 from database import get_psychotherapists_by_specialty
 from prompt_helpers import generate_prompt 
-from flask import Flask, jsonify, request
+from flask_cors import CORS
+from flask import Flask, request
 
 app = Flask(__name__)
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 @app.route('/health', methods = ['GET'])
 def health():
