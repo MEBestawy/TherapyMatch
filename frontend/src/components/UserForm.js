@@ -12,6 +12,7 @@ import {
   FormLabel,
 } from '@mui/material';
 import Recorder from './Recorder';
+import axios from 'axios';
 
 const UserForm = () => {
   const [name, setName] = useState('');
@@ -28,9 +29,37 @@ const UserForm = () => {
     })
     setAudioText(text);
   }
+  const submitForm = async () => {
+    let notes = '';
+    if(inputType==='text'){
+      notes = situation;
+    } else{
+      notes = audioText;
+    }
+    try{
+      const response = await axios.post(
+        `http://localhost:5000/submit`,
+        {
+          name,
+          contact,
+          address,
+          notes
+        }
+      );
+      console.log("submit-response:", response);
+    }
+    catch(error){
+      console.log("SubmitErr", error)
+    }
+    
+  };
   const handleSubmit = (event) => {
     console.log("audio:", audioText)
     event.preventDefault();
+    
+    submitForm();
+    
+
     // Handle form submission and call backend API
   };
 

@@ -3,12 +3,14 @@ import openai
 from dotenv import load_dotenv
 from database import get_psychotherapists_by_specialty
 from prompt_helpers import generate_prompt 
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask import Flask, request
 
 
+load_dotenv()
+
 app = Flask(__name__)
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -40,7 +42,7 @@ def submit():
 
 
 if __name__ == "__main__":
-    load_dotenv()
+    
 
     openai.api_key = os.getenv("OPENAI_API_KEY")
     app.run()
