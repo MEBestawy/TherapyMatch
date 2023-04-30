@@ -7,16 +7,19 @@ from flask_cors import CORS
 from flask import Flask, request
 
 app = Flask(__name__)
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app)
 
-@app.route('/health', methods = ['GET'])
+@app.route('/health', methods=['GET'])
 def health():
     return 'OK'
 
-@app.route('/submit', methods = ['POST'])
+@app.route('/submit', methods=['POST', 'OPTIONS'])
 def submit():
-    notes = request.args.get('notes')
-    user_address = request.args.get('address', '')
+    if request.method == 'OPTIONS':
+        return _build_cors_preflight_response()
+
+    notes = request.json.get('notes')
+    user_address = request.json.get('address', '')
 
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -34,6 +37,13 @@ def submit():
     therapists = get_psychotherapists_by_specialty(diagnosis_lst, user_address)
     return { "therapists": therapists }
 
+def _build_cors_preflight_response():
+    response = make_response()
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', '*')
+    response.headers.add('Access-Control-Allow-Methods', '*')
+    response.status_code = 204
+    return response
 
 if __name__ == "__main__":
     load_dotenv()
