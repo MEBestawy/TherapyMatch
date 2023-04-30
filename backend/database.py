@@ -36,9 +36,10 @@ def get_psychotherapists_by_specialty(keypoints, user_address):
     geocode_result = geocode_address(user_address)
     if not geocode_result:
         return []
-    user_lat, user_lon = geocode_result
-    if not user_lat or not user_lon:
-        return []
+    if x:= geocode_result:
+        user_lat, user_lon = x
+        if not user_lat or not user_lon:
+            return []
 
     # Filter psychotherapists by matching keypoints in their specialties
     matching_psychotherapists = [
@@ -48,9 +49,10 @@ def get_psychotherapists_by_specialty(keypoints, user_address):
 
     # Calculate distances to the user and sort by the number of matching keypoints and distance
     for p in matching_psychotherapists:
-        p_lat, p_lon = geocode_address(p[3])
-        if not p_lat or not p_lon:
-            continue
+        if y:=geocode_address(p[3]):
+            p_lat, p_lon = y
+            if not p_lat or not p_lon:
+                continue
 
         p.append(haversine_distance(user_lat, user_lon, p_lat, p_lon))
 

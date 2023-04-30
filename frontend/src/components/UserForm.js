@@ -61,6 +61,7 @@ const UserForm = () => {
     }
     catch(error){
       console.log("SubmitErr", error)
+      setWaiting(false);
     }
     
   };
@@ -77,7 +78,8 @@ const UserForm = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
+      <Paper elevation={1} sx={{padding: '2%'}}>
       <Typography variant="h4" align="center" sx={{padding: "5%"}}>
         Psychotherapist Finder
       </Typography>
@@ -159,7 +161,7 @@ const UserForm = () => {
           </Grid>
         </Grid>
       </form>
-      {submitted && 
+      {submitted && therapists.length > 0 &&
       <>
         <Typography variant='h6'>Therapists</Typography>
         <Paper elevation={3} sx={{margin: '5%'}}>
@@ -183,7 +185,7 @@ const UserForm = () => {
 
 
       </>}
-        
+      </Paper>
     </Container>
   );
 };
