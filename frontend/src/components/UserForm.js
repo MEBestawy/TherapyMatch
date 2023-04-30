@@ -10,6 +10,12 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Paper
 } from '@mui/material';
 import Recorder from './Recorder';
 import axios from 'axios';
@@ -21,6 +27,10 @@ const UserForm = () => {
   const [situation, setSituation] = useState('');
   const [audioText, setAudioText] = useState('');
   const [inputType, setInputType] = useState('text');
+  const [therapists, setTherapists] = useState([]);
+
+  const [waiting, setWaiting] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleAudioChange = (lst) => {
     let text = '';
@@ -38,13 +48,16 @@ const UserForm = () => {
     }
     try{
       const response = await axios.post(
-        `https://therapymatch-flask-api.azurewebsites.net/submit`,
+        `http://127.0.0.1:5000/submit`,
         {
           address,
           notes
         }
       );
-      console.log("submit-response:", response);
+      
+      setTherapists(response.data.therapists);
+      console.log("submit-response:", therapists);
+      setWaiting(false);
     }
     catch(error){
       console.log("SubmitErr", error)
@@ -52,6 +65,8 @@ const UserForm = () => {
     
   };
   const handleSubmit = (event) => {
+    setSubmitted(true);
+    setWaiting(true);
     console.log("audio:", audioText)
     event.preventDefault();
     
@@ -130,12 +145,45 @@ const UserForm = () => {
             )}
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" type="submit" sx={{marginBottom:'10%'}} fullWidth>
-              Find Psychotherapist
-            </Button>
+            {
+              waiting && submitted 
+              ? 
+              <Button loading variant="outlined" sx={{marginBottom:'10%'}} fullWidth>
+                {`Finding Therapists `}<CircularProgress size='1rem'></CircularProgress>
+              </Button>
+              :
+              <Button variant="contained" color="primary" type="submit" sx={{marginBottom:'10%'}} fullWidth>
+                Find Psychotherapist
+              </Button>
+            }
           </Grid>
         </Grid>
       </form>
+      {submitted && 
+      <>
+        <Typography variant='h6'>Therapists</Typography>
+        <Paper elevation={3} sx={{margin: '5%'}}>
+          <List>
+              {therapists.map((therapist, index) =>{
+                return (<>
+                  <React.Fragment key={index}>
+                  <ListItem>
+                    <ListItemText
+                      primary={therapist[1]}
+                      secondary={`Contact: ${therapist[2]} - Address: ${therapist[4]}`}
+                    />
+                  </ListItem>
+                  {index<therapists.length-1 && <Divider />}
+                </React.Fragment>
+                </>)
+              })}
+          </List>
+        </Paper>
+
+
+
+      </>}
+        
     </Container>
   );
 };
