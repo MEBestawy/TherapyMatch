@@ -1,38 +1,17 @@
-from flask import Flask, request
-from dotenv import load_dotenv
-load_dotenv()
 import os
 import openai
+from dotenv import load_dotenv
+from database import get_psychotherapists_by_specialty
+from prompt_helpers import generate_prompt 
+from flask_cors import CORS
+from flask import Flask, request
 
 
 app = Flask(__name__)
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-
-def generateChatResponse(prompt):
-    messages = []
-    messages.append({"role": "system", "content": "Your name is Karabo. You are a helpful assistant."})
-    prompt += "\nGiven the above diagnosis, create a summary and the most likely diagnosis result.\
-        Diagnosis can only be from this list: [ADHD, Bipolar Disorder, Depression Attachment Issues, \
-            OCD, Personality Disorder, Schizofrenia].\n\n Format it as 1 to 3 key terms specifically \
-                taken from the list."
-    print(prompt)
-
-    question = {}
-    question['role'] = 'user'
-    question['content'] = prompt
-    messages.append(question)
-
-    response = openai.ChatCompletion.create(model="gpt-3.5-turbo",messages=messages)
-
-    try:
-        answer = response['choices'][0]['message']['content'].replace('\n', '<br>')
-    except:
-        answer = 'Interesting'
-
-    print(answer)
-    return answer
 
 @app.route('/health', methods = ['GET'])
 def health():
@@ -40,10 +19,28 @@ def health():
 
 @app.route('/submit', methods = ['POST'])
 def submit():
-   prompt = request.form['prompt']
-   res = {}
-   res['answer'] = generateChatResponse(prompt)
-   return 'OK'
+    notes = request.args.get('notes')
+    user_address = request.args.get('address', '')
+
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=generate_prompt(notes),
+        temperature=0,
+        max_tokens=120,
+        top_p=1.0,
+        frequency_penalty=0.0,
+        presence_penalty=0.0
+    )
+
+    diagnosis = response.choices[0].text
+    diagnosis_lst = [diag.strip() for diag in diagnosis.split(",")]
+
+    therapists = get_psychotherapists_by_specialty(diagnosis_lst, user_address)
+    return { "therapists": therapists }
+
 
 if __name__ == "__main__":
+    load_dotenv()
+
+    openai.api_key = os.getenv("OPENAI_API_KEY")
     app.run()

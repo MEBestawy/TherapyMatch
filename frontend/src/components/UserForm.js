@@ -11,22 +11,32 @@ import {
   FormControl,
   FormLabel,
 } from '@mui/material';
+import Recorder from './Recorder';
 
 const UserForm = () => {
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [address, setAddress] = useState('');
   const [situation, setSituation] = useState('');
+  const [audioText, setAudioText] = useState('');
   const [inputType, setInputType] = useState('text');
 
+  const handleAudioChange = (lst) => {
+    let text = '';
+    lst.forEach((s) => {
+      text += `${s}. `
+    })
+    setAudioText(text);
+  }
   const handleSubmit = (event) => {
+    console.log("audio:", audioText)
     event.preventDefault();
     // Handle form submission and call backend API
   };
 
   return (
     <Container maxWidth="sm">
-      <Typography variant="h4" align="center">
+      <Typography variant="h4" align="center" sx={{padding: "5%"}}>
         Psychotherapist Finder
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -87,14 +97,11 @@ const UserForm = () => {
                 onChange={(e) => setSituation(e.target.value)}
               />
             ) : (
-              <Button variant="contained" component="label">
-                Upload Voicemail
-                <input type="file" hidden accept="audio/*" />
-              </Button>
+              <Recorder updateAudioText = {handleAudioChange }></Recorder>
             )}
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" type="submit" fullWidth>
+            <Button variant="contained" color="primary" type="submit" sx={{marginBottom:'10%'}} fullWidth>
               Find Psychotherapist
             </Button>
           </Grid>
