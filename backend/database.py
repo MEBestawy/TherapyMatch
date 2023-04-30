@@ -40,7 +40,7 @@ def get_psychotherapists_by_specialty(keypoints, user_address):
 
     # Filter psychotherapists by matching keypoints in their specialties
     matching_psychotherapists = [
-        p for p in all_psychotherapists
+        list(p) for p in all_psychotherapists
         if any(keypoint.lower() in p[5].lower() for keypoint in keypoints)
     ]
 
@@ -55,7 +55,7 @@ def get_psychotherapists_by_specialty(keypoints, user_address):
     matching_psychotherapists.sort(key=lambda x: (len(keypoints) - sum(kp.lower() in x[5].lower() for kp in keypoints), x[-1]))
 
     # Return the top 5 ranked therapists
-    return matching_psychotherapists[:5]
+    return matching_psychotherapists[:3]
 
 
 

@@ -1,8 +1,9 @@
 import os
 import openai
 from dotenv import load_dotenv
+from database import get_psychotherapists_by_specialty
 from prompt_helpers import generate_prompt 
-from flask import Flask, request
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -13,6 +14,7 @@ def health():
 @app.route('/submit', methods = ['POST'])
 def submit():
     notes = request.args.get('notes')
+    user_address = request.args.get('address', '')
 
     response = openai.Completion.create(
         model="text-davinci-003",
@@ -26,7 +28,9 @@ def submit():
 
     diagnosis = response.choices[0].text
     diagnosis_lst = [diag.strip() for diag in diagnosis.split(",")]
-    return { "diagnosis": diagnosis_lst }
+
+    therapists = get_psychotherapists_by_specialty(diagnosis_lst, user_address)
+    return { "therapists": therapists }
 
 
 if __name__ == "__main__":
