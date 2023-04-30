@@ -30,23 +30,23 @@ const UserForm = () => {
     setAudioText(text);
   }
   const submitForm = async () => {
-    let situationFinal = '';
+    let notes = '';
     if(inputType==='text'){
-      situationFinal = situation;
+      notes = situation;
     } else{
-      situationFinal = audioText;
+      notes = audioText;
     }
     try{
       const response = await axios.post(
-        `http://127.0.0.1:5000/submit/`,
+        `http://localhost:5000/submit`,
         {
           name,
           contact,
           address,
-          situationFinal
+          notes
         }
       );
-      console.log(response);
+      console.log("submit-response:", response);
     }
     catch(error){
       console.log("SubmitErr", error)
